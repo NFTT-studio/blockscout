@@ -23,6 +23,7 @@ EXPOSE 4000
 
 ENV PORT=4000 \
     MIX_ENV="prod" \
+    COINGECKO_COIN_ID="nftmart-token" \
     SECRET_KEY_BASE="RMgI4C1HSkxsEjdhtGMfwAHfyT6CKWXOgzCboJflfSm4jeAlic52io05KB6mqzc5"
 
 # Cache elixir deps
@@ -36,7 +37,7 @@ RUN mix do deps.get, local.rebar --force, deps.compile
 
 ADD . .
 
-ARG COIN
+ARG COIN=NMT
 RUN if [ "$COIN" != "" ]; then \
         sed -i s/"POA"/"${COIN}"/g apps/block_scout_web/priv/gettext/en/LC_MESSAGES/default.po; \
         sed -i "/msgid \"Ether\"/{n;s/msgstr \"\"/msgstr \"${COIN}\"/g}" apps/block_scout_web/priv/gettext/default.pot; \
